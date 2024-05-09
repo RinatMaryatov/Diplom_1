@@ -1,5 +1,4 @@
 import org.hamcrest.MatcherAssert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,18 +19,12 @@ public class BurgerTest {
     Ingredient ingredient2;
     @Mock
     Ingredient ingredient3;
-    @Mock
-    Database database;
-    private final List<Bun> buns = List.of(new Bun("black bun", 100.50F));
 
-    @Before
-    public void setDefaultBun() {
-        Mockito.when(database.availableBuns()).thenReturn(buns);
-    }
+    private final List<Bun> buns = List.of(new Bun("black bun", 100.50F));
 
     @Test
     public void checkSetBun() {
-        burger.setBuns(database.availableBuns().get(0));
+        burger.setBuns(buns.get(0));
         String bunName = "black bun";
         assertEquals(bunName, burger.bun.getName());
     }
@@ -40,7 +33,7 @@ public class BurgerTest {
     public void checkGetPrice() {
         Mockito.when(ingredient1.getPrice()).thenReturn(319.01F);
         Mockito.when(ingredient2.getPrice()).thenReturn(240.04F);
-        burger.setBuns(database.availableBuns().get(0));
+        burger.setBuns(buns.get(0));
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         float expectedPrice = 760.05F;
@@ -61,7 +54,7 @@ public class BurgerTest {
         Mockito.when(ingredient3.getName()).thenReturn("dinosaur");
         Mockito.when(ingredient3.getPrice()).thenReturn(99F);
 
-        burger.setBuns(database.availableBuns().get(0));
+        burger.setBuns(buns.get(0));
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         burger.addIngredient(ingredient3);
