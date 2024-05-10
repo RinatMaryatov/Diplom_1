@@ -1,11 +1,11 @@
 import org.hamcrest.MatcherAssert;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import praktikum.*;
-import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,25 +19,24 @@ public class BurgerTest {
     Ingredient ingredient2;
     @Mock
     Ingredient ingredient3;
-
-    private final List<Bun> buns = List.of(new Bun("black bun", 100.50F));
+    @Mock
+    Bun furstBun;
 
     @Test
     public void checkSetBun() {
-        burger.setBuns(buns.get(0));
-        String bunName = "black bun";
-        assertEquals(bunName, burger.bun.getName());
+        burger.setBuns(furstBun);
+        assertEquals(furstBun.name, burger.bun.getName());
     }
 
     @Test
     public void checkGetPrice() {
         Mockito.when(ingredient1.getPrice()).thenReturn(319.01F);
         Mockito.when(ingredient2.getPrice()).thenReturn(240.04F);
-        burger.setBuns(buns.get(0));
+        burger.setBuns(furstBun);
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
-        float expectedPrice = 760.05F;
-        assertEquals("Incorrect price for a burger with 2 ingredients",expectedPrice, burger.getPrice(), 0);
+        float expectedPrice = (burger.bun.getPrice() * 2) + ingredient1.getPrice() + ingredient2.getPrice();
+        Assert.assertEquals(expectedPrice, burger.getPrice(), 0);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class BurgerTest {
         Mockito.when(ingredient3.getName()).thenReturn("dinosaur");
         Mockito.when(ingredient3.getPrice()).thenReturn(99F);
 
-        burger.setBuns(buns.get(0));
+        burger.setBuns(furstBun);
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         burger.addIngredient(ingredient3);
@@ -62,8 +61,8 @@ public class BurgerTest {
                 + "= sauce sour cream =" + "\r\n"
                 + "= filling cutlet =" + "\r\n"
                 + "= filling dinosaur =" + "\r\n"
-                + "(==== black bun ====)" + "\r\n\n"
-                + "Price: 700,000000" + "\r\n";
+                + "(==== " +  burger.bun.getName() + " ====)" + "\r\n\r\n"
+                +"Price: " + String.format("%f", burger.getPrice()) + "\r\n";
         assertEquals(expectedReceipt, burger.getReceipt());
     }
 
