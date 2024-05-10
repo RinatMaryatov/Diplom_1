@@ -20,19 +20,19 @@ public class BurgerTest {
     @Mock
     Ingredient ingredient3;
     @Mock
-    Bun furstBun;
+    Bun firstBun;
 
     @Test
     public void checkSetBun() {
-        burger.setBuns(furstBun);
-        assertEquals(furstBun.name, burger.bun.getName());
+        burger.setBuns(firstBun);
+        assertEquals(firstBun.name, burger.bun.getName());
     }
 
     @Test
     public void checkGetPrice() {
         Mockito.when(ingredient1.getPrice()).thenReturn(319.01F);
         Mockito.when(ingredient2.getPrice()).thenReturn(240.04F);
-        burger.setBuns(furstBun);
+        burger.setBuns(firstBun);
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         float expectedPrice = (burger.bun.getPrice() * 2) + ingredient1.getPrice() + ingredient2.getPrice();
@@ -53,7 +53,7 @@ public class BurgerTest {
         Mockito.when(ingredient3.getName()).thenReturn("dinosaur");
         Mockito.when(ingredient3.getPrice()).thenReturn(99F);
 
-        burger.setBuns(furstBun);
+        burger.setBuns(firstBun);
         burger.addIngredient(ingredient1);
         burger.addIngredient(ingredient2);
         burger.addIngredient(ingredient3);
